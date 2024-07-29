@@ -1,21 +1,17 @@
-const http = require("http");
-const fs = require("fs");
+const express = require("express");
 
-const myServer = http.createServer((req, res) => {
-  const log = `${Date.now()}: ${req.url} New req Recevied!\n`;
-  fs.appendFile("log.txt", log, (err, data) => {
-    switch (req.url) {
-      case "/":
-        res.end("Home Page");
-        break;
-      case "/about":
-        res.end("This is a new node js project: http server");
-        break;
-      default:
-        res.end("SORRY! 404 Not Found");
-    }
-    res.end("Hello from server!");
-  });
+const app = express();
+
+const PORT = 8000;
+
+app.get("/", (req, res) => {
+  return res.send("Hello from  Home page!");
 });
 
-myServer.listen(8000, () => console.log("Server Started!"));
+//  Use : http://localhost:8000/about?myName=Eugenia
+
+app.get("/about", (req, res) => {
+  return res.send("Hello from:  About page! " + req.query.myName);
+});
+
+app.listen(PORT, () => console.log("Server started! (express)"));
